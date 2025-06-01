@@ -1,6 +1,4 @@
 
-import { LuDog } from "react-icons/lu";
-
 import { createBrowserRouter } from "react-router-dom";
 
 import { Layout } from "./layout";
