@@ -7,7 +7,7 @@ export function Cart() {
   const { cart,total,addItem,removeItem } = useContext(CartContext);
 
   return (
-    <div className=" bg-amber-700 flex flex-col min-h-screen px-4 text-center mt-2 pt-14">
+    <div className="p-14 bg-amber-700 flex flex-col min-h-screen px-4 text-center mt-2 pt-14">
       <h1 className="m-5 text-2xl font-bold mb-6">Aqui estão seus itens 👇</h1>
 <div className=" text-white flex items-center justify-center">
    
@@ -66,8 +66,8 @@ export function Cart() {
 
       </div>
       {cart.length >0 && (
-    <div className=" fixed bottom-4 -right-0 right-5 mx1 bg-zinc-300 text-zinc-900 p-4 rounded-xl shadow-lg flex items-center gap-2">
-<span className=" rounded text-2xl">🛒</span>
+    <div className=" fixed bottom-4 right-5 mx1 bg-zinc-300 text-zinc-900 p-4 rounded-xl shadow-lg flex items-center gap-2">
+<span className="text-xs rounded lg:text-2xl">🛒</span>
 <span className="font-bold"></span>
 Total:{total}
     </div>
