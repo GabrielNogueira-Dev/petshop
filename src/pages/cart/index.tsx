@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { CartContext } from "../../context/CartIndex";
-import { BiCartAdd } from "react-icons/bi";
+
 
 export function Cart() {
   const { cart,total,addItem,removeItem } = useContext(CartContext);
