@@ -113,25 +113,28 @@ const resultFormated = result.toLocaleString("pt-BR",{
     currency:"BRL"})
     setTotal(resultFormated)
 }
+function removeItem(produto: CartProps) {
+  const index = cart.findIndex(item => item.id === produto.id);
 
-function removeItem(produto:CartProps){
+  if (index === -1) return; // Produto não encontrado no carrinho
 
-    const index = cart.findIndex(item => item.id === produto.id)
+  if (cart[index].amount > 1) {
+    let carrinho = [...cart];
+    carrinho[index] = { ...carrinho[index] };
+    carrinho[index].amount = carrinho[index].amount - 1;
+    carrinho[index].total = carrinho[index].total - carrinho[index].price;
 
-    if(cart[index].amount >1){
-         let carrinho = [...cart];
-        carrinho[index] = {...carrinho[index]};
-        carrinho[index].amount = carrinho[index].amount -1
-        carrinho[index].total = carrinho[index].total - carrinho[index].price
+    setCart(carrinho);
+    totalResult(carrinho);
+  } else {
+    // quantidade === 1, remover o item do carrinho
+    const carrinho = cart.filter(item => item.id !== produto.id);
 
-        setCart(carrinho)
-        totalResult(carrinho)
-        return
-    }
-    removeItem
-
-
+    setCart(carrinho);
+    totalResult(carrinho);
+  }
 }
+
 
     return(
 
