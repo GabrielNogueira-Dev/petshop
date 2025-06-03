@@ -1,11 +1,12 @@
 import { useState,useEffect,useContext } from "react"
-import { api } from "../../services/api"
+
 import { BsCartPlus } from "react-icons/bs";
 import { CartContext } from "../../context/CartIndex";
 import { useNavigate } from "react-router-dom"
 
 import { auth } from "../../services/firebaseconection";
 import { onAuthStateChanged } from "firebase/auth";
+import { getProductsFirestore } from "../../services/getProducts";
 
 export interface DataProps{
     id:number;
@@ -26,9 +27,9 @@ const navigate = useNavigate()
      console.log("Usuário auth state:", user);
         if (user) {
         try {
-          const response = await api.get("/products");
-          console.log("Produtos carregados:", response.data);
-          setProducts(response.data);
+          const response = await getProductsFirestore();
+          console.log("Produtos carregados:", response);
+          setProducts(response);
         } catch (error) {
           console.error("Erro ao buscar produtos:", error);
         } finally {
