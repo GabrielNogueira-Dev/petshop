@@ -1,8 +1,13 @@
-import { useState,useEffect, useContext } from "react"
+import { useState,useEffect,useContext } from "react"
 import { api } from "../../services/api"
-import { BsCartPlus,BsCart3 } from "react-icons/bs";
+import { BsCartPlus } from "react-icons/bs";
 import { CartContext } from "../../context/CartIndex";
 
+import { useNavigate } from "react-router-dom";
+
+interface CartSave{
+    cartItems:DataProps[];
+}
 
 export interface DataProps{
     id:number;
@@ -14,7 +19,8 @@ export interface DataProps{
 
 export function Home(){
     const [products,setProducts] = useState<DataProps[]>([])
-const {addItem}=useContext(CartContext)
+    const {addItem}=useContext(CartContext)
+const navigate = useNavigate()
 
     useEffect(()=>{
 async function getProducts() {
@@ -26,9 +32,19 @@ async function getProducts() {
 getProducts()
     },[])
 
+    useEffect(()=>{
+
+
+
+},[])
+
 
 function handleAdd(produto:DataProps){
 addItem(produto)
+}
+
+function click(id:number){
+    navigate(`/detail/${id}`)
 }
 
         return(
@@ -43,7 +59,8 @@ addItem(produto)
         <section key={produtos.id} className="w-full  p-5 bg-amber-600 rounded shadow text-center">
 
     <h1 className="font-bold text-zinc-900 truncate w-full mb-4 ">{produtos.title}</h1>
-    <img className="cursor-pointer rounded-md w-full h-10/12 object-cover transition-transform duration-300 transform hover:scale-105" 
+   <img onClick={()=>click(produtos.id)}
+    className="cursor-pointer rounded-md w-full h-10/12 object-cover transition-transform duration-300 transform hover:scale-105" 
     src={produtos.cover} alt={produtos.title} />
    
 <div className="flex items-center justify-center gap-3 mt-3 mb-4">
@@ -54,8 +71,10 @@ addItem(produto)
     })}
   </p>
   <button>
-    <BsCartPlus onClick={()=> handleAdd(produtos)}
-    className="text-xl font-bold cursor-pointer rounded" />
+    <BsCartPlus
+     onClick={()=> handleAdd(produtos)}
+     style={{ animationDuration: "2s" }}
+    className="text-xl font-bold cursor-pointer rounded transition hover:scale-110 hover:animate-ping"/>
   </button>
 </div>
         </section>

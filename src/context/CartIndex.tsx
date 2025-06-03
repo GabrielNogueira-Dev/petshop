@@ -34,36 +34,27 @@ const[cart,setCart]=useState<CartProps[]>([])
 const[total,setTotal]=useState("")
 
 useEffect(() => {
-  // Começa observando mudanças na autenticação do usuário
-  const unsub = onAuthStateChanged(auth, (user) => {
-    // Se o usuário estiver logado
-    if (user) {
-      // Cria uma função assíncrona interna (porque o callback do onAuthStateChanged não pode ser async direto)
-      const loadCart = async () => {
-        try {
-          // Referência ao documento do carrinho no Firestore
-          const cartDoc = doc(db, "carts", user.uid);
-          // Pega o documento
-          const docSnap = await getDoc(cartDoc);
+  const unsub = onAuthStateChanged(auth, async (user) => {
+    if (!user) return;
 
-          // Se existir, atualiza o estado do carrinho. Senão, usa array vazio.
-          setCart(docSnap.exists() ? docSnap.data().items || [] : []);
-        } catch (error) {
-          console.error("Erro ao carregar carrinho:", error);
-        }
-      };
-
-      // Chama a função assíncrona
-      loadCart();
-    } else {
-      // Usuário não está logado, limpa o carrinho
+    try {
+         // Cria uma referência para o documento do carrinho no Firestore, usando o uid do usuário atual
+      const cartDoc = doc(db, "carts", user.uid);
+      // Busca o documento do Firestore (dados do carrinho do usuário)
+      const docSnap = await getDoc(cartDoc);
+ 
+      if (docSnap.exists()) {
+        setCart(docSnap.data().items || []);
+      }
+    } catch (error) {
+      console.error("Erro ao carregar carrinho:", error);
       setCart([]);
     }
   });
 
-  // Quando o componente desmontar, cancela o listener de auth
-  return () => unsub();
+  return () => unsub(); // remove listener ao desmontar
 }, []);
+
 
 
 useEffect(() => {
@@ -74,7 +65,6 @@ useEffect(() => {
       console.log("Usuário não autenticado, não salva.");
       return;
     }
-
     // Cria uma referência para o documento do carrinho, com o uid do usuário atual.
     const cartDoc = doc(db, "carts", auth.currentUser.uid);
 
