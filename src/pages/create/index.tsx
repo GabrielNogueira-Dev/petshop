@@ -26,21 +26,23 @@ if(email === "" || password ===""){
 }
 
 
-try{
-    const userCredential = await createUserWithEmailAndPassword(auth,email,password)
-        const user = userCredential.user
-        
-        await addDoc(collection(db,"users"),{
-                   uid:user.uid,
-                   email:user.email,
-                   createdAcc: new Date()
-                })
-                
-                toast.success(`Usuário criado com sucesso! ${userCredential}`)
-                navigate("/login",{replace:true})
-}catch(error){
-        toast.error(`Error ao criar conta ${error}`)
-    };
+try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // ✅ grava corretamente no /carts/{uid}
+      await addDoc(collection(db, "carts"), {
+        uid: user.uid,
+        email: user.email,
+        createdAt: new Date(),
+      });
+
+      toast.success(`Usuário criado com sucesso!`);
+      navigate("/login", { replace: true });
+
+    } catch (error) {
+      toast.error(`Erro ao criar conta: ${String(error)}`);
+    }
   }
 
 return (

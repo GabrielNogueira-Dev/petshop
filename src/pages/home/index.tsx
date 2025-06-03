@@ -3,6 +3,10 @@ import { api } from "../../services/api"
 import { BsCartPlus } from "react-icons/bs";
 import { CartContext } from "../../context/CartIndex";
 import { useNavigate } from "react-router-dom"
+
+import { auth } from "../../services/firebaseconection";
+import { onAuthStateChanged } from "firebase/auth";
+
 export interface DataProps{
     id:number;
     title:string;
@@ -14,23 +18,40 @@ export interface DataProps{
 export function Home(){
     const [products,setProducts] = useState<DataProps[]>([])
     const {addItem}=useContext(CartContext)
+    const [loading,setLoading] = useState(true)
 const navigate = useNavigate()
 
-    useEffect(()=>{
-async function getProducts() {
-    const response = await api.get("/products")
-    console.log(response.data)
-    setProducts(response.data)
-}
+    useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+     console.log("Usuário auth state:", user);
+        if (user) {
+        try {
+          const response = await api.get("/products");
+          console.log("Produtos carregados:", response.data);
+          setProducts(response.data);
+        } catch (error) {
+          console.error("Erro ao buscar produtos:", error);
+        } finally {
+          setLoading(false);
+        }
+      } else {
+        console.warn("Usuário não autenticado.");
+        navigate("/login"); // Redireciona se não estiver logado
+      }
+    });
 
-getProducts()
-    },[])
 
-    useEffect(()=>{
+  
+      return () => unsubscribe();
+}, [navigate]);
 
-
-
-},[])
+if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-amber-700">
+        <p className="text-xl font-bold text-white">Carregando produtos...</p>
+      </div>
+    );
+  }
 
 
 function handleAdd(produto:DataProps){
