@@ -56,7 +56,7 @@ catch(error:any){
 toast.error("Erro ao enviar Email" + error.message)
 }
 }
-
+Reset()
 return (
   <div>
     <form onSubmit={register}
