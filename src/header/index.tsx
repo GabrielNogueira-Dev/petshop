@@ -17,7 +17,7 @@ export function Header(){
 <FiShoppingCart size={24}/>
 
 {cartAmount > 0 && (
-  <span className="absolute right-3 -top-3 px-2.5 bg-sky-500 rounded-full w-6 h-6 flex items-center justify-center text-white text-xs">
+  <span className="absolute  -right-3 -top-3 px-2.5 bg-sky-500 rounded-full w-6 h-6 flex items-center justify-center text-white text-xs">
     {cartAmount}
   </span>
 )}
