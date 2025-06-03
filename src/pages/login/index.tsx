@@ -1,7 +1,7 @@
  import { useState } from "react"
 
 import { auth } from "../../services/firebaseconection"
-import { signInWithEmailAndPassword } from "firebase/auth"
+import { signInWithEmailAndPassword,sendPasswordResetEmail } from "firebase/auth"
 
 import { type FormEvent } from "react"
 import { useNavigate } from "react-router-dom"
@@ -34,6 +34,21 @@ toast.error(`aconteceu algum error, ${error.message}`)
 
     }
    
+  async function Reset(){
+    if(!email){
+      toast.warn("Digite o Email para acessar o link de recuperação!")
+      return
+    }
+
+    try {
+      await sendPasswordResetEmail(auth, email)
+      toast.success("Email enviado! Verifique sua caixa ou spam.")
+    } catch(error: any){
+      toast.error("Erro ao enviar Email: " + error.message)
+    }
+  }
+
+
     return(
   <div>
     <form onSubmit={addLogin}
@@ -70,6 +85,14 @@ toast.error(`aconteceu algum error, ${error.message}`)
           type="password"
         />
       
+ <button
+            type="button"
+            onClick={Reset}
+            className="cursor-pointer text-blue-700 underline self-center font-semibold"
+          >
+            Esqueci minha senha
+          </button>
+
         <button 
           type="submit"
           className=" cursor-pointer mt-4 bg-zinc-900 hover:bg-amber-800 text-white font-semibold py-2 rounded transition duration-300"

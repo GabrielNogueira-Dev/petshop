@@ -9,7 +9,7 @@ import { auth } from "../../services/firebaseconection";
 
 import { Link } from "react-router-dom"
 
-import { createUserWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
+import { createUserWithEmailAndPassword,  } from "firebase/auth";
 import { addDoc, collection } from 'firebase/firestore';
 
 
@@ -42,21 +42,7 @@ try{
         toast.error(`Error ao criar conta ${error}`)
     };
   }
-async function Reset(){
-    if(!email){
-        toast.warn("Digite o Email para acessar o link de recuperação!")
-    return
-    }
 
-try{
-    await sendPasswordResetEmail(auth,email)
-    toast.success("Email enviado! Verifique sua caixa ou span..")
-}
-catch(error:any){
-toast.error("Erro ao enviar Email" + error.message)
-}
-}
-Reset()
 return (
   <div>
     <form onSubmit={register}
