@@ -2,13 +2,7 @@ import { useState,useEffect,useContext } from "react"
 import { api } from "../../services/api"
 import { BsCartPlus } from "react-icons/bs";
 import { CartContext } from "../../context/CartIndex";
-
-import { useNavigate } from "react-router-dom";
-
-interface CartSave{
-    cartItems:DataProps[];
-}
-
+import { useNavigate } from "react-router-dom"
 export interface DataProps{
     id:number;
     title:string;
